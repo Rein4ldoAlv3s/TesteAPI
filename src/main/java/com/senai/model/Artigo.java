@@ -1,14 +1,13 @@
-package com.senai.domain.model;
+package com.senai.model;
 
-import java.util.List;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,23 +18,21 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-public class Parceiro {
-	
+public class Artigo {
+
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String logo;
-	private String nome;
-	
-	@JsonIgnore
+	private String foto;
+	private String titulo;
+	private Date anoDePublicacao;
+	private String isbn;
+	private String editorial;
+
 	@ManyToOne
-	private Evento evento;
-	
-	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "parceiro_projeto", 
-				joinColumns = @JoinColumn(name = "parceiro_id"),
-				inverseJoinColumns = @JoinColumn(name = "projeto_id"))
-	private List<Projeto> projetos;
+	@JoinColumn(name = "revista_id")
+	private Revista revista;
+
+
 }

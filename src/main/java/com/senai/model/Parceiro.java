@@ -1,4 +1,4 @@
-package com.senai.domain.model;
+package com.senai.model;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.senai.domain.model.enums.Categoria;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,25 +19,21 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-public class Equipe {
-
+public class Parceiro {
+	
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String foto;
+	private String logo;
 	private String nome;
-	private String pequenoCurriculo;
-	private Categoria categoria;
-	private String professor;
-	private String aluno;
-	private String profissionais;
+	
+	@ManyToOne
+	@JoinColumn(name = "evento_id")
+	private Evento evento;
 	
 	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "equipe_projeto", 
-				joinColumns = @JoinColumn(name = "equipe_id"),
-				inverseJoinColumns = @JoinColumn(name = "projeto_id"))
+	@ManyToMany(mappedBy = "parceiros")
 	private List<Projeto> projetos;
-	
+
 }

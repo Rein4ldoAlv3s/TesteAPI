@@ -1,16 +1,20 @@
-package com.senai.domain.model;
+package com.senai.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,17 +31,17 @@ public class Evento {
 	private String foto;
 	private String titulo;
 	private String resumo;
+	@Column(name = "localidade")
 	private String local;
 	private Date data;
 	private Date horario;
 	
-	@ManyToMany
-	@JoinTable(name = "evento_palestrante", 
-				joinColumns = @JoinColumn(name = "evento_id"),
-				inverseJoinColumns = @JoinColumn(name = "palestrante_id"))
-	private List<Palestrante> palestrantes;
 	
+	@ElementCollection
+	@CollectionTable(name="PALESTRANTE")
+	private Set<String> palestrantes = new HashSet<>();
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "evento")
-	private List<Parceiro> empresasParceiras;
-
+	private List<Parceiro> parceiros;
 }
